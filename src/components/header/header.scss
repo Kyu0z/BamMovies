@@ -1,0 +1,137 @@
+@use '../../scss/' as *;
+
+.header {
+    width: 100%;
+    height: $header_height;
+
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    right: 0;
+
+    padding: 60px 70px;
+
+    @include flex(center, space-between);
+
+    @include tablet() {
+        padding: 30px 20px;
+    }
+
+    @include tablet_mini() {
+        flex-direction: column;
+
+        padding: 20px 20px;
+    }
+
+
+
+    &__logo {
+        @include flex(center, center);
+
+        img {
+            max-width: 70px;
+        }
+
+        h3 {
+            margin-left: 15px;
+            font-size: 2.1rem;
+        }
+
+        @include tablet() {
+            img {
+                max-width: 60px;
+            }
+        }  
+        
+        @include tablet_mini() {
+            img {
+                max-width: 45px;
+            }
+
+            h3 {
+                margin-left: 12px;
+                font-size: 1.9rem;
+            }
+        }
+
+    }
+
+    &__nav {
+        @include tablet_mini() {
+            position: fixed;
+            bottom: 0;
+
+            width: 100%;
+
+            background-color: #141517;
+
+            transition: bottom 1s linear;
+        }
+
+        ul {
+            @include flex(center, space-between);
+
+            @include tablet_mini() {
+                height: 65px;
+
+                @include flex(center, center);
+
+                li {
+                    font-size: 2.0rem;
+                }
+            }
+    
+    
+            li {
+                margin-left: 55px;
+                font-weight: 600;
+                font-size: 2.1rem;
+    
+                position: relative;
+                z-index: 1;
+    
+                    &::before, &::after {
+                        content: '';
+                        display: block;
+                        background-color: $main_color;
+    
+                        position: absolute;
+                        z-index: 1;
+    
+                        height: 3px;
+                        width: 0;
+    
+                        transition: width 0.3s linear;
+                    }
+    
+                    &::before {
+                        left: 0;
+                        top: 0;
+                    }
+    
+                    &::after {
+                        right: 0;
+                        bottom: 0;
+                    }
+    
+                    &:hover::before,  &:hover::after {
+                        width: 50%;
+                    }
+
+                    @include tablet_mini() {
+                        margin-left: 45px;
+                    }
+
+                    @include mobile() {
+                        margin-left: 20px;
+                        font-size: 1.8rem;
+                    }
+            }
+    
+            li:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+}
+

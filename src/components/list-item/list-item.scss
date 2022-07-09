@@ -1,0 +1,20 @@
+@use '../../scss/' as *;
+
+.list-item {
+    .swiper-slide {
+        width: 13% !important;
+        perspective: 500;
+    }
+
+    @include tablet() {
+        .swiper-slide {
+            width: 30% !important;
+        }
+    }
+
+    @include mobile() {
+        .swiper-slide {
+            width: 40% !important;
+        }
+    }
+}

@@ -1,0 +1,237 @@
+@use '../../scss/' as *;
+
+.detail {
+    width: 100%;
+
+    position: relative;
+
+    .banner {
+        width: 100%;
+        height: 50vh;
+
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        position: relative;
+
+        &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            background: rgba(0,0,0,0.6);
+        }
+
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+
+            background-image: linear-gradient(to top, #0f0f0f, rgba(#000, 0));
+        }
+    }
+
+    &__info {
+        max-width: 1000px;
+        position: relative;
+
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: -200px;
+
+        padding: 0 2rem;
+        
+        
+        @include flex(center,center);
+
+
+        &__img {
+            flex: 1;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: $border-radius;
+            padding-top: 50%;
+        }
+
+        &__credits {
+            width: 70%;
+            padding-left: 40px;
+
+            h2 {
+                font-size: 3.7rem;
+                margin-bottom: 15px;
+            }
+
+            &__select {
+                margin-bottom: 30px;
+                .btn {
+                    padding: 3px 12px;
+                    margin-top: 10px;
+                }
+
+                .btn~.btn {
+                    margin-left: 20px;
+                }
+            }
+
+            p {
+                display:-webkit-box;
+                -webkit-line-clamp:6;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-word;
+
+                font-size: 1.7rem;
+                color: $text_color;
+
+                margin-bottom: 30px;
+                font-weight: 600;
+            }
+
+            &__authors {
+                h5 {
+                    font-weight: 700;
+                    font-size: 2.2rem;
+                }
+            }
+        }
+    }
+
+    @include mobile() {
+        &__info {
+            flex-direction: column;
+
+            margin-top: -270px;
+            padding: 0;
+            
+            &__img {
+                width: 25vw;
+                height: 44.4vw;
+            }
+
+            &__credits {
+                width: 100%;
+                padding-left: 0;
+
+                h2 {
+                    font-size: 2.2rem;
+                    text-align: center;
+                    margin: 5px 0;
+                }
+
+                &__select  {
+                    text-align: center;
+
+                    .btn {
+                        padding: 2px 11px;
+                        font-size: 1.5rem;
+                        margin-bottom: 10px;
+
+                        .btn ~ .btn {
+                            margin-left: 30px;
+                        }
+                    }
+                }
+
+                p {
+                    -webkit-line-clamp: 4;
+                    font-size: 1.4rem;
+                    padding: 0 25px;
+                    margin-bottom: 20px;
+                }
+
+                &__authors {
+                    padding: 0 20px;
+
+                    h5 {
+                        font-size: 2rem;
+                    }
+                }
+            }
+        }
+    }
+
+    &__videos {
+        width: 100%;
+
+        margin-top: 220px;
+        padding: 0 70px;
+
+        @include tablet() {
+            padding: 0 50px;
+        }
+
+        @include mobile() {
+            padding: 0 10px;
+        }
+
+        &__item {
+            width: 100%;
+
+            iframe {
+                width: 100%;
+            }
+
+            h3 {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+
+                @include mobile() {
+                    font-size: 1.6rem;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+
+        &__item ~ &__item {
+            margin-top: 28px;
+        }
+
+        @include mobile() {
+            margin-top: 90px;
+        }
+
+    }
+
+    &__similars {
+        width: 100%;
+        margin-top: 50px;
+        padding: 0 15px;
+
+        h3 {
+            font-size: 2.5rem;
+        }
+
+        .swiper-slide {
+            width: 13% !important;
+            perspective: 500;
+        }
+    
+        @include tablet() {
+            .swiper-slide {
+                width: 30% !important;
+            }
+        }
+    
+        @include mobile() {
+            h3 {
+                font-size: 1.6rem;
+            }
+
+            .swiper-slide {
+                width: 40% !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+@use '../../scss/' as *;
+
+.authers-cast {
+    width: 100%;
+    display: flex;
+    margin-left: -10px;
+
+    &__item {
+        flex: 1;
+
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        padding-top: 28%;
+        margin-left: 10px;
+
+        border-radius: 10px;
+
+        position: relative;
+
+        span {
+            position: absolute;
+
+            display:-webkit-box;
+            -webkit-line-clamp:1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
+
+            width: 100%;
+            font-size: 1.3rem;
+            padding-left: 5px;
+            bottom: -23px;
+        }
+    }
+}

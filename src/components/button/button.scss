@@ -1,0 +1,37 @@
+@use '../../scss/' as *;
+
+.btn {
+    padding: 15px 40px;
+    border: 0;
+    outline: none;
+    font-size: 1.8rem;
+    font-weight: 600;
+
+    color: $text_color;
+    background-image: linear-gradient(to right, $main_color, #e51010);
+    border-radius: $border_radius;
+    border: 3px solid transparent;
+
+    cursor: pointer;
+
+    box-shadow: 0 3px 10px 3px rgb(42 43 40 / 80%);
+
+    transition: all 0.6s linear;
+
+    @media(pointer:fine) {
+        &:hover {
+            transform: scale(1.1) translateY(-5px) !important;
+        }
+    }
+
+
+}
+
+.outline {
+    background: transparent;
+    background-image: none;
+    border: 3px solid white;
+
+}
+
+
