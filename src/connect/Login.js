@@ -51,8 +51,7 @@ const Login = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     authApi
       .loginByPassword(username, password)
       .then(({ success, message, data, error }) => {
