@@ -1,20 +1,71 @@
-import React, { useState, useRef } from "react";
-import { TextField, Typography, Link, Button, Stack, Box } from "@mui/material";
+import React, { useState, useRef, useEffect } from "react";
+import authApi from "../api/auth";
+import { TextField, Typography, Button, Stack, Box, Grid } from "@mui/material";
 import loginUrl from "./images/footer-bg.jpg";
+import { setUser, setToken } from "../redux";
+import { useDispatch } from "react-redux";
+import { useHistory, useLocation, Link } from "react-router-dom";
 
 import LoginIcon from "@mui/icons-material/Login";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
 
-const Login = ({ setUser }) => {
-  const [username, setUsername] = useState();
-  // Support "enter"
-  const [password, setPassword] = useState(); // hook
-  // Chuyển hướng tới trang chủ || ràng buộc login
-  // const navigate = useNavigate();
+const Login = () => {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const history = useHistory();
 
-  // Support "enter"
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState(); // hook
   const passwordEl = useRef();
+
+  const setUserAndRedirect = (user) => {
+    dispatch(setUser(user));
+    const nextUrl =
+      new URL(window.location.href).searchParams.get("next") ?? "/";
+    return history.push(nextUrl);
+  };
+
+  useEffect(() => {
+    const tokenRaw = localStorage.getItem("token");
+    if (tokenRaw) {
+      const token = JSON.parse(tokenRaw);
+      dispatch(setToken(token));
+      authApi.me().then(({ success, data }) => {
+        if (success) {
+          return setUserAndRedirect(data);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (location.state) {
+      const { username, password } = location.state;
+      if (username && password) {
+        setUsername(username);
+        setPassword(password);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    authApi
+      .loginByPassword(username, password)
+      .then(({ success, message, data, error }) => {
+        if (success) {
+          const { user, token } = data;
+          dispatch(setToken(token));
+          return setUserAndRedirect(user);
+        } else {
+          return alert(error?.error_description ?? error?.error ?? message);
+        }
+      });
+  };
+
   return (
     <div className="main" style={{}}>
       <div
@@ -63,62 +114,48 @@ const Login = ({ setUser }) => {
             >
               Enjoy the moment 🍿
             </Typography>
-            <input
-              autocomplete="off"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              style={{
-                marginBottom: "1.6rem",
-                background: "rgba(255, 255, 255, 0.1)",
-                color: "#fff",
-                height: "40px",
-                width: "100%",
-                padding: "8px 2px",
-                border: "1px solid #b3b3b3",
-                borderRadius: "3px",
-                outline: "none",
-                fontSize: "1.2rem",
-              }}
-              name=""
-              id=""
-              placeholder="Email"
-            />
-            <input
-              type="password"
-              style={{
-                marginBottom: "1.6rem",
-                background: "rgba(255, 255, 255, 0.1)",
-                color: "#fff",
-                height: "40px",
-                width: "100%",
-                padding: "8px 2px",
-                border: "1px solid #b3b3b3",
-                borderRadius: "3px",
-                outline: "none",
-                fontSize: "1.2rem",
-              }}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              ref={passwordEl}
-              onKeyPress={(ev) => {
-                if (ev.key === "Enter") {
-                  ev.preventDefault();
-                  // handleLogin();
-                }
-              }}
-              required
-              name=""
-              id=""
-              placeholder="Password"
-            />
+            <Grid container direction="column" spacing="12">
+              <Grid item>
+                <TextField
+                  autocomplete="off"
+                  required
+                  focused
+                  fullWidth
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  label="Username"
+                  variant="filled"
+                  color="success"
+                  inputProps={{ style: { fontSize: 20, color: "#fff" } }}
+                  InputLabelProps={{ style: { fontSize: 20, color: "#fff" } }}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  type="password"
+                  autocomplete="off"
+                  required
+                  focused
+                  fullWidth
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  ref={passwordEl}
+                  onKeyPress={(ev) => {
+                    if (ev.key === "Enter") {
+                      ev.preventDefault();
+                      handleSubmit();
+                    }
+                  }}
+                  label="Password"
+                  variant="filled"
+                  color="success"
+                  inputProps={{ style: { fontSize: 20, color: "#fff" } }}
+                  InputLabelProps={{ style: { fontSize: 20, color: "#fff" } }}
+                />
+              </Grid>
+            </Grid>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <Link
-                href="/auth/forgetpassword"
-                sx={{ fontSize: "1rem" }}
-                underline="hover"
-                pb={2}
-              >
+              <Link to="/auth/forgetpassword" style={{ fontSize: "1rem" }}>
                 {"Forget password?"}
               </Link>
             </div>
@@ -128,7 +165,7 @@ const Login = ({ setUser }) => {
               variant="contained"
               size="medium"
               fullWidth
-              // onClick={handleLogin}
+              onClick={handleSubmit}
               endIcon={<LoginIcon />}
             >
               Login
@@ -170,10 +207,8 @@ const Login = ({ setUser }) => {
                 Don't have an account yet?
               </Typography>
               <Link
-                href="/auth/register"
-                sx={{ fontSize: "1rem", ml: "1rem" }}
-                underline="hover"
-                size="large"
+                to="/auth/register"
+                style={{ fontSize: "1rem", ml: "1rem" }}
               >
                 {"Sign Up"}
               </Link>

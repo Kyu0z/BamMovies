@@ -1,5 +1,7 @@
 import React from "react";
 import "./footer.scss";
+import { useSelector } from "react-redux";
+import { selectUser, selectIsLoggedIn } from "../../redux";
 
 import logo from "../../assets/tmovie.png";
 import footer_bg from "../../assets/footer-bg.jpg";
@@ -7,6 +9,9 @@ import footer_bg from "../../assets/footer-bg.jpg";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
+
   return (
     <div className="footer" style={{ backgroundImage: `url(${footer_bg})` }}>
       <div className="logo">
@@ -54,6 +59,15 @@ const Footer = () => {
           <Link to="/">
             <li>Top IMDB</li>
           </Link>
+          {isLoggedIn ? (
+            <Link to="/auth/logout">
+              <li>Logout ({user.username})</li>
+            </Link>
+          ) : (
+            <Link to="/auth/login">
+              <li>Login</li>
+            </Link>
+          )}
         </ul>
       </div>
     </div>

@@ -1,12 +1,29 @@
-import React from "react";
-import { Button, Link, Typography, Stack } from "@mui/material";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory, Link } from "react-router-dom";
+import { Button, Typography, Stack, Grid, TextField } from "@mui/material";
+import authApi from "../api/auth";
 
 // img
 import loginUrl from "./images/footer-bg.jpg";
 
 const Register = () => {
-  const onSubmit = (values) => {
-    console.log(values);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    authApi.register(username, email, password).then(({ success, message }) => {
+      if (success) {
+        return history.push("/auth/login", { username, password });
+      } else {
+        return alert(message);
+      }
+    });
   };
 
   return (
@@ -64,99 +81,67 @@ const Register = () => {
               <Typography variant="h5" size="large">
                 Already A Member?
               </Typography>
-              <Link
-                href="/auth/login"
-                sx={{ fontSize: "1.5rem", ml: "1rem" }}
-                underline="hover"
-                size="large"
-              >
+              <Link to="/auth/login" style={{ fontSize: "1.5rem", ml: "1rem" }}>
                 {"Login In"}
               </Link>
             </Stack>
-            <Stack direction="row" spacing={3} sx={{ marginTop: "3rem" }}>
-              <input
-                autocomplete="off"
-                required
-                style={{
-                  marginBottom: "1.6rem",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  color: "#fff",
-                  height: "40px",
-                  width: "100%",
-                  padding: "8px 2px",
-                  border: "1px solid #b3b3b3",
-                  borderRadius: "3px",
-                  outline: "none",
-                  fontSize: "1.2rem",
-                }}
-                name=""
-                id=""
-                placeholder="Name"
-              />
-              <input
-                autocomplete="off"
-                required
-                style={{
-                  marginBottom: "1.6rem",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  color: "#fff",
-                  height: "40px",
-                  width: "100%",
-                  padding: "8px 2px",
-                  border: "1px solid #b3b3b3",
-                  borderRadius: "3px",
-                  outline: "none",
-                  fontSize: "1.2rem",
-                }}
-                name=""
-                id=""
-                placeholder="Age"
-              />
-            </Stack>
-            <Stack direction="row" spacing={3} sx={{ marginTop: "1.5rem" }}>
-              <input
-                autocomplete="off"
-                required
-                style={{
-                  marginBottom: "1.6rem",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  color: "#fff",
-                  height: "40px",
-                  width: "100%",
-                  padding: "8px 2px",
-                  border: "1px solid #b3b3b3",
-                  borderRadius: "3px",
-                  outline: "none",
-                  fontSize: "1.2rem",
-                }}
-                name=""
-                id=""
-                placeholder="Email"
-              />
-              <input
-                autocomplete="off"
-                type="password"
-                required
-                style={{
-                  marginBottom: "1.6rem",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  color: "#fff",
-                  height: "40px",
-                  width: "100%",
-                  padding: "8px 2px",
-                  border: "1px solid #b3b3b3",
-                  borderRadius: "3px",
-                  outline: "none",
-                  fontSize: "1.2rem",
-                }}
-                name=""
-                id=""
-                placeholder="Password"
-              />
-            </Stack>
+            <Grid
+              container
+              direction="column"
+              spacing="12"
+              sx={{ marginTop: "3rem" }}
+            >
+              <Grid item>
+                <TextField
+                  autocomplete="off"
+                  required
+                  focused
+                  fullWidth
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  label="Username"
+                  variant="filled"
+                  color="success"
+                  inputProps={{ style: { fontSize: 20, color: "#fff" } }}
+                  InputLabelProps={{ style: { fontSize: 20, color: "#fff" } }}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  autocomplete="off"
+                  required
+                  focused
+                  fullWidth
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  label="Email"
+                  variant="filled"
+                  color="success"
+                  inputProps={{ style: { fontSize: 20, color: "#fff" } }}
+                  InputLabelProps={{ style: { fontSize: 20, color: "#fff" } }}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  type="password"
+                  autocomplete="off"
+                  required
+                  focused
+                  fullWidth
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  label="Password"
+                  variant="filled"
+                  color="success"
+                  inputProps={{ style: { fontSize: 20, color: "#fff" } }}
+                  InputLabelProps={{ style: { fontSize: 20, color: "#fff" } }}
+                />
+              </Grid>
+            </Grid>
             <Button
               variant="contained"
               sx={{ float: "right", marginTop: "2rem", fontSize: "1.5rem" }}
+              onClick={handleSubmit}
             >
               Register
             </Button>

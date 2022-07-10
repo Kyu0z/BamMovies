@@ -7,28 +7,28 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 
 import Routes from "./config/Routes";
-import Login from "./connect/Login";
-import Register from "./connect/Register";
 import Create from "./components/create/Create";
+import { Provider } from "react-redux";
+import { store } from "./redux";
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="container">
-        <Route
-          render={(props) => (
-            <>
-              <Header />
-              <Routes />
-              <Footer />
-              <Create />
-            </>
-          )}
-        />
-      </div>
-    </BrowserRouter>
-    // <Login></Login>
-    // <Register></Register>
+    <Provider store={store}>
+      <BrowserRouter>
+        <div className="container">
+          <Route
+            render={(props) => (
+              <>
+                <Header />
+                <Routes />
+                <Footer />
+                <Create />
+              </>
+            )}
+          />
+        </div>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
