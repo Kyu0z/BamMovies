@@ -1,0 +1,7 @@
+@use '../../scss/' as *;
+
+.input input {
+    padding: 10px 20px;
+    border-radius: $border_radius;
+    font-size: 1.5rem;
+}
