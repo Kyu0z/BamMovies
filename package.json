@@ -4,7 +4,7 @@
   "private": true,
   "type": "commonjs",
   "dependencies": {
-    "postcss-safe-parser": "^5.0.2",
+    "postcss-safe-parser": "^4.0.1",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
